@@ -1,11 +1,14 @@
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class MyFrame extends JFrame
 {
@@ -33,15 +36,14 @@ public class MyFrame extends JFrame
     JButton deleteBtn = new JButton("Изтриване");
     JButton editBtn = new JButton("Редакция");
 
+    JTable table = new JTable();
+    JScrollPane scrollPane = new JScrollPane(table);
+
     public MyFrame()
     {
         this.setSize(400, 600);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridLayout(3, 1));
-
-        this.add(upPanel);
-        this.add(midPanel);
-        this.add(downPanel);
 
         upPanel.setLayout(new GridLayout(5, 2));
         upPanel.add(fnameL);
@@ -54,10 +56,16 @@ public class MyFrame extends JFrame
         upPanel.add(ageTF);
         upPanel.add(salaryL);
         upPanel.add(salaryTF);
+        this.add(upPanel);
 
         midPanel.add(addBtn);
         midPanel.add(editBtn);
         midPanel.add(deleteBtn);
+        this.add(midPanel);
+
+        scrollPane.setPreferredSize(new Dimension(350, 150));
+        downPanel.add(scrollPane);
+        this.add(downPanel);
 
         this.setVisible(true);
     }
