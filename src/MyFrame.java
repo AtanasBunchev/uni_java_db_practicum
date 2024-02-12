@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
 
 public class MyFrame extends JFrame
 {
@@ -20,9 +21,13 @@ public class MyFrame extends JFrame
 
     JTextField fnameTF = new JTextField();
     JTextField lnameTF = new JTextField();
-    JTextField genderTF = new JTextField();
     JTextField ageTF = new JTextField();
     JTextField salaryTF = new JTextField();
+
+    String[] genders = {
+        "Мъж", "Жена"
+    };
+    JComboBox<String> genderCombo = new JComboBox<String>(genders);
 
     JButton addBtn = new JButton();
 
@@ -35,6 +40,18 @@ public class MyFrame extends JFrame
         this.add(upPanel);
         this.add(midPanel);
         this.add(downPanel);
+
+        upPanel.setLayout(new GridLayout(5, 2));
+        upPanel.add(fnameL);
+        upPanel.add(fnameTF);
+        upPanel.add(lnameL);
+        upPanel.add(lnameTF);
+        upPanel.add(genderL);
+        upPanel.add(genderCombo);
+        upPanel.add(ageL);
+        upPanel.add(ageTF);
+        upPanel.add(salaryL);
+        upPanel.add(salaryTF);
 
         midPanel.add(addBtn);
 
