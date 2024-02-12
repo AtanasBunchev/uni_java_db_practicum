@@ -29,7 +29,9 @@ public class MyFrame extends JFrame
     };
     JComboBox<String> genderCombo = new JComboBox<String>(genders);
 
-    JButton addBtn = new JButton();
+    JButton addBtn = new JButton("Добавянв");
+    JButton deleteBtn = new JButton("Изтриване");
+    JButton editBtn = new JButton("Редакция");
 
     public MyFrame()
     {
@@ -54,6 +56,8 @@ public class MyFrame extends JFrame
         upPanel.add(salaryTF);
 
         midPanel.add(addBtn);
+        midPanel.add(editBtn);
+        midPanel.add(deleteBtn);
 
         this.setVisible(true);
     }
