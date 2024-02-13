@@ -45,6 +45,7 @@ public class MyFrame extends JFrame
         "Мъж", "Жена"
     };
     JComboBox<String> genderCombo = new JComboBox<String>(genders);
+    JComboBox<String> personCombo = new JComboBox<String>();
 
     JButton addBtn = new JButton("Добавяне");
     JButton deleteBtn = new JButton("Изтриване");
@@ -80,6 +81,7 @@ public class MyFrame extends JFrame
         midPanel.add(deleteBtn);
         midPanel.add(searchBtn);
         midPanel.add(refreshBtn);
+        midPanel.add(personCombo);
         this.add(midPanel);
 
         addBtn.addActionListener(new AddAction());
@@ -97,6 +99,7 @@ public class MyFrame extends JFrame
 
 
         this.refreshTable();
+        this.refreshPersonCombo();
         this.setVisible(true);
     }
 
@@ -108,6 +111,31 @@ public class MyFrame extends JFrame
             state = conn.prepareStatement(sql);
             result = state.executeQuery();
             table.setModel(new MyModel(result));
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshPersonCombo()
+    {
+        conn = DBConnection.instance();
+        String sql = "SELECT ID, FNAME, LNAME FROM PERSON;";
+        String item = "";
+
+        personCombo.removeAllItems();
+
+        try {
+            state = conn.prepareStatement(sql);
+            result = state.executeQuery();
+            while(result.next()) {
+                item = result.getObject(1).toString() + ".";
+                item += result.getObject(2).toString() + " ";
+                item += result.getObject(3).toString();
+
+                personCombo.addItem(item);
+            }
         } catch (SQLException e1) {
             e1.printStackTrace();
         } catch (Exception e) {
@@ -141,6 +169,7 @@ public class MyFrame extends JFrame
                 state.execute();
                 clearForm();
                 refreshTable();
+                refreshPersonCombo();
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -160,6 +189,7 @@ public class MyFrame extends JFrame
                 state.setInt(1, id);
                 state.execute();
                 refreshTable();
+                refreshPersonCombo();
                 clearForm();
                 id = -1;
             } catch (SQLException e1) {
@@ -187,6 +217,7 @@ public class MyFrame extends JFrame
                 state.execute();
 
                 refreshTable();
+                refreshPersonCombo();
                 clearForm();
                 id = -1;
             } catch(SQLException e1) {
@@ -226,6 +257,7 @@ public class MyFrame extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             refreshTable();
+            refreshPersonCombo();
         }
     }
 
