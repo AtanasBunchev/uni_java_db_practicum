@@ -49,6 +49,8 @@ public class MyFrame extends JFrame
     JButton addBtn = new JButton("Добавяне");
     JButton deleteBtn = new JButton("Изтриване");
     JButton updateBtn = new JButton("Редакция");
+    JButton searchBtn = new JButton("Търси");
+    JButton refreshBtn = new JButton("Обнови");
 
     JTable table = new JTable();
     JScrollPane scrollPane = new JScrollPane(table);
@@ -76,11 +78,15 @@ public class MyFrame extends JFrame
         midPanel.add(addBtn);
         midPanel.add(updateBtn);
         midPanel.add(deleteBtn);
+        midPanel.add(searchBtn);
+        midPanel.add(refreshBtn);
         this.add(midPanel);
 
         addBtn.addActionListener(new AddAction());
         updateBtn.addActionListener(new UpdateAction());
         deleteBtn.addActionListener(new DeleteAction());
+        searchBtn.addActionListener(new SearchAction());
+        refreshBtn.addActionListener(new RefreshAction());
 
 
         scrollPane.setPreferredSize(new Dimension(350, 150));
@@ -144,7 +150,7 @@ public class MyFrame extends JFrame
     class DeleteAction implements ActionListener
     {
         @Override
-        public void actionPerformed (ActionEvent e)
+        public void actionPerformed(ActionEvent e)
         {
             conn = DBConnection.instance();
             String sql = "DELETE FROM PERSON WHERE ID = ?;";
@@ -165,7 +171,7 @@ public class MyFrame extends JFrame
     class UpdateAction implements ActionListener
     {
         @Override
-        public void actionPerformed (ActionEvent e)
+        public void actionPerformed(ActionEvent e)
         {
             conn = DBConnection.instance();
             String sql = "UPDATE PERSON SET FNAME = ?, LNAME = ?, GENDER = ?, AGE = ?, SALARY = ? WHERE ID = ?;";
@@ -188,6 +194,38 @@ public class MyFrame extends JFrame
             } catch(Exception e2) {
                 e2.printStackTrace();
             }
+        }
+    }
+
+    class SearchAction implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            conn = DBConnection.instance();
+            String sql = "SELECT * FROM PERSON WHERE AGE = ?;";
+
+            try {
+                state = conn.prepareStatement(sql);
+                state.setInt(1, Integer.parseInt(ageTF.getText()));
+                result = state.executeQuery();
+                table.setModel(new MyModel(result));
+
+            } catch(SQLException e1) {
+                e1.printStackTrace();
+            } catch(Exception e2) {
+                e2.printStackTrace();
+            }
+
+        }
+    }
+
+    class RefreshAction implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            refreshTable();
         }
     }
 
