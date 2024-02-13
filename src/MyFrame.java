@@ -1,6 +1,8 @@
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -32,7 +34,7 @@ public class MyFrame extends JFrame
     };
     JComboBox<String> genderCombo = new JComboBox<String>(genders);
 
-    JButton addBtn = new JButton("Добавянв");
+    JButton addBtn = new JButton("Добавяне");
     JButton deleteBtn = new JButton("Изтриване");
     JButton editBtn = new JButton("Редакция");
 
@@ -63,6 +65,8 @@ public class MyFrame extends JFrame
         midPanel.add(deleteBtn);
         this.add(midPanel);
 
+        addBtn.addActionListener(new AddAction());
+
         scrollPane.setPreferredSize(new Dimension(350, 150));
         downPanel.add(scrollPane);
         this.add(downPanel);
@@ -70,4 +74,15 @@ public class MyFrame extends JFrame
         this.setVisible(true);
     }
 
+    class AddAction implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            System.out.println(fnameTF.getText() +" " + lnameTF.getText());
+            System.out.println(genderCombo.getSelectedItem().toString());
+            System.out.println(ageTF.getText());
+            System.out.println(salaryTF.getText());
+        }
+    }
 }
