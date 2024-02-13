@@ -48,7 +48,7 @@ public class MyFrame extends JFrame
 
     JButton addBtn = new JButton("Добавяне");
     JButton deleteBtn = new JButton("Изтриване");
-    JButton editBtn = new JButton("Редакция");
+    JButton updateBtn = new JButton("Редакция");
 
     JTable table = new JTable();
     JScrollPane scrollPane = new JScrollPane(table);
@@ -74,11 +74,12 @@ public class MyFrame extends JFrame
 
 
         midPanel.add(addBtn);
-        midPanel.add(editBtn);
+        midPanel.add(updateBtn);
         midPanel.add(deleteBtn);
         this.add(midPanel);
 
         addBtn.addActionListener(new AddAction());
+        updateBtn.addActionListener(new UpdateAction());
         deleteBtn.addActionListener(new DeleteAction());
 
 
@@ -157,6 +158,35 @@ public class MyFrame extends JFrame
                 id = -1;
             } catch (SQLException e1) {
                 e1.printStackTrace();
+            }
+        }
+    }
+
+    class UpdateAction implements ActionListener
+    {
+        @Override
+        public void actionPerformed (ActionEvent e)
+        {
+            conn = DBConnection.instance();
+            String sql = "UPDATE PERSON SET FNAME = ?, LNAME = ?, GENDER = ?, AGE = ?, SALARY = ? WHERE ID = ?;";
+
+            try {
+                state = conn.prepareStatement(sql);
+                state.setString(1, fnameTF.getText());
+                state.setString(2, lnameTF.getText());
+                state.setString(3, genderCombo.getSelectedItem().toString());
+                state.setInt(4, Integer.parseInt(ageTF.getText()));
+                state.setDouble(5, Double.parseDouble(salaryTF.getText()));
+                state.setInt(6, id);
+                state.execute();
+
+                refreshTable();
+                clearForm();
+                id = -1;
+            } catch(SQLException e1) {
+                e1.printStackTrace();
+            } catch(Exception e2) {
+                e2.printStackTrace();
             }
         }
     }
