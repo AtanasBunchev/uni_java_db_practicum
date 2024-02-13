@@ -72,18 +72,22 @@ public class MyFrame extends JFrame
         upPanel.add(salaryTF);
         this.add(upPanel);
 
+
         midPanel.add(addBtn);
         midPanel.add(editBtn);
         midPanel.add(deleteBtn);
         this.add(midPanel);
 
         addBtn.addActionListener(new AddAction());
+        deleteBtn.addActionListener(new DeleteAction());
 
-        table.addMouseListener(new MouseAction());
 
         scrollPane.setPreferredSize(new Dimension(350, 150));
         downPanel.add(scrollPane);
         this.add(downPanel);
+
+        table.addMouseListener(new MouseAction());
+
 
         this.refreshTable();
         this.setVisible(true);
@@ -104,7 +108,7 @@ public class MyFrame extends JFrame
         }
     }
 
-    public void cleanForm()
+    public void clearForm()
     {
         fnameTF.setText("");
         lnameTF.setText("");
@@ -128,8 +132,29 @@ public class MyFrame extends JFrame
                 state.setInt(4, Integer.parseInt(ageTF.getText()));
                 state.setDouble(5, Double.parseDouble(salaryTF.getText()));
                 state.execute();
-                cleanForm();
+                clearForm();
                 refreshTable();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    class DeleteAction implements ActionListener
+    {
+        @Override
+        public void actionPerformed (ActionEvent e)
+        {
+            conn = DBConnection.instance();
+            String sql = "DELETE FROM PERSON WHERE ID = ?;";
+
+            try {
+                state = conn.prepareStatement(sql);
+                state.setInt(1, id);
+                state.execute();
+                refreshTable();
+                clearForm();
+                id = -1;
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
