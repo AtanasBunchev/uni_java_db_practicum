@@ -3,6 +3,8 @@ import java.awt.GridLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -77,6 +79,8 @@ public class MyFrame extends JFrame
 
         addBtn.addActionListener(new AddAction());
 
+        table.addMouseListener(new MouseAction());
+
         scrollPane.setPreferredSize(new Dimension(350, 150));
         downPanel.add(scrollPane);
         this.add(downPanel);
@@ -129,6 +133,51 @@ public class MyFrame extends JFrame
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
+        }
+    }
+
+    class MouseAction implements MouseListener
+    {
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+            int row = table.getSelectedRow();
+            id = Integer.parseInt(table.getValueAt(row, 0).toString());
+            fnameTF.setText(table.getValueAt(row, 1).toString());
+            lnameTF.setText(table.getValueAt(row, 2).toString());
+            ageTF.setText(table.getValueAt(row, 4).toString());
+            salaryTF.setText(table.getValueAt(row, 5).toString());
+
+            String gender = table.getValueAt(row, 3).toString();
+            if(gender.equals("Мъж")) {
+                genderCombo.setSelectedIndex(0);
+            } else if (gender.equals("Жена")) {
+                genderCombo.setSelectedIndex(1);
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e)
+        {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e)
+        {
+
         }
     }
 }
