@@ -81,7 +81,31 @@ public class MyFrame extends JFrame
         downPanel.add(scrollPane);
         this.add(downPanel);
 
+        this.refreshTable();
         this.setVisible(true);
+    }
+
+    public void refreshTable()
+    {
+        conn = DBConnection.instance();
+        String sql = "SELECT * FROM PERSON;";
+        try {
+            state = conn.prepareStatement(sql);
+            result = state.executeQuery();
+            table.setModel(new MyModel(result));
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cleanForm()
+    {
+        fnameTF.setText("");
+        lnameTF.setText("");
+        ageTF.setText("");
+        salaryTF.setText("");
     }
 
     class AddAction implements ActionListener
@@ -100,6 +124,8 @@ public class MyFrame extends JFrame
                 state.setInt(4, Integer.parseInt(ageTF.getText()));
                 state.setDouble(5, Double.parseDouble(salaryTF.getText()));
                 state.execute();
+                cleanForm();
+                refreshTable();
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
