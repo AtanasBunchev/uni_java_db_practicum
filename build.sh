@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd src
-javac *.java
+javac -classpath .:../lib/lib/h2.jar *.java
 cd ..
 mv src/*.class bin/
 

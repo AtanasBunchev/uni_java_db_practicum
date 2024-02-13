@@ -1,6 +1,6 @@
 #!/bin/sh
 
-./build.sh
+#./build.sh
 
 cd bin
-java MainClass
+java -classpath .:../lib/h2.jar MainClass

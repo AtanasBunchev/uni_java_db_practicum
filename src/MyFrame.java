@@ -11,9 +11,19 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class MyFrame extends JFrame
 {
+    Connection conn = null;
+    PreparedStatement state = null;
+    ResultSet result = null;
+
+    int id = -1;
+
     JPanel upPanel = new JPanel();
     JPanel midPanel = new JPanel();
     JPanel downPanel = new JPanel();
@@ -79,10 +89,20 @@ public class MyFrame extends JFrame
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            System.out.println(fnameTF.getText() +" " + lnameTF.getText());
-            System.out.println(genderCombo.getSelectedItem().toString());
-            System.out.println(ageTF.getText());
-            System.out.println(salaryTF.getText());
+            conn = DBConnection.instance();
+            String sql = "INSERT INTO PERSON(fname, lname, gender, age, salary) values(?, ?, ?, ?, ?);";
+
+            try {
+                state = conn.prepareStatement(sql);
+                state.setString(1, fnameTF.getText());
+                state.setString(2, lnameTF.getText());
+                state.setString(3, genderCombo.getSelectedItem().toString());
+                state.setInt(4, Integer.parseInt(ageTF.getText()));
+                state.setDouble(5, Double.parseDouble(salaryTF.getText()));
+                state.execute();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }
